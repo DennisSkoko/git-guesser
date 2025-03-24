@@ -15,12 +15,77 @@
 </p>
 
 <form method="POST" use:enhance>
-  <input type="text" name="name" />
+  <label>
+    <span>Name</span>
+    <input type="text" name="name" />
+  </label>
+
   <button>Save to leaderboard</button>
 </form>
 
 <ul>
   {#each data.matches as commit}
-    <li><pre>{commit.id}</pre> - {@html highlightMatch(commit.title, data.score.search)} - {commit.author} - {commit.date}</li>
+    <li>
+      <div class="header">
+        <h2>{commit.author}</h2>
+        <div class="metadata">
+          <span>{commit.date}</span>
+          <pre>{commit.id}</pre>
+        </div>
+      </div>
+      {@html highlightMatch(commit.title, data.score.search)}
+    </li>
   {/each}
 </ul>
+
+<style>
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 5em;
+  }
+
+  li {
+    border: thin solid #08424d;
+    padding: .5em;
+  }
+
+  .header {
+    margin-bottom: 1em;
+  }
+
+  @media (min-width: 40rem) {
+    .header {
+      display: flex;
+      gap: .5em;
+    }
+  }
+
+  .metadata {
+    display: flex;
+    gap: .5em;
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin: 0;
+    flex: 1 1 auto;
+    font-weight: normal;
+  }
+
+  pre {
+    margin: 0;
+  }
+
+  pre, .header span {
+    color: #898989;
+  }
+
+  li :global(strong) {
+    color: #1db4d1;
+  }
+</style>
