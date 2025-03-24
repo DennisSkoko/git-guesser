@@ -8,7 +8,7 @@ function getScore(matches: number, guess: number) {
 }
 
 export const actions = {
-  guess: async ({ request }) => {
+  default: async ({ request }) => {
     const data = await request.formData()
 
     const search = data.get('search') as string
@@ -25,46 +25,17 @@ export const actions = {
     }
 
     const matches = commits.search(search)
-
-    return {
-      valid: true,
-      matches: matches,
-      guess: count,
-      search,
-      score: getScore(matches.length, count)
-    }
-  },
-
-  saveToLeaderboard: async ({ request }) => {
-    const data = await request.formData()
-
-    const name = data.get('name') as string
-    const search = data.get('search') as string
-    const guessAsString = data.get('guess') as string
-    const scoreAsString = data.get('score') as string
-    const matchesAsString = data.get('matches') as string
-
-    if (!name || !search || !guessAsString || !scoreAsString || !matchesAsString) {
-      return fail(400, { valid: false })
-    }
-
-    const guess = parseInt(guessAsString, 10)
-    const score = parseInt(scoreAsString, 10)
-    const matches = parseInt(matchesAsString, 10)
-
-    if (Number.isNaN(score) || Number.isNaN(matches) || score < 0 || matches < 0) {
-      return fail(400, { valid: false })
-    }
-
-    const actualMatches = commits.search(search)
-
-    if (actualMatches.length !== matches || score != getScore(actualMatches.length, guess)) {
-      return fail(400)
-    }
-
     const id = uuid()
-    await leaderboard.add({ id, name, search, guess, score, matches })
 
-    return redirect(303, `/leaderboard#${id}`)
+    await leaderboard.add({
+      id,
+      name: null,
+      search,
+      guess: count,
+      score: getScore(matches.length, count),
+      matches: matches.length
+    })
+
+    redirect(303, `result/${id}`)
   }
 } satisfies Actions

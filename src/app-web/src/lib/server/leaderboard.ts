@@ -3,7 +3,7 @@ import { env } from '$env/dynamic/private'
 
 export interface Score {
   id: string
-  name: string
+  name: string | null
   search: string
   guess: number
   matches: number
@@ -34,10 +34,25 @@ export async function add(score: Score) {
   await write(leaderboard)
 }
 
-export async function get() {
+export async function list() {
   const leaderboard = await read()
 
   leaderboard.sort((a, b) => a.score - b.score)
 
   return leaderboard
+}
+
+export async function get(id: string) {
+  const leaderboard = await read()
+
+  return leaderboard.find(score => score.id === id)
+}
+
+export async function update(score: Score) {
+  const leaderboard = await read()
+  const index = leaderboard.findIndex(existing => existing.id === score.id)
+
+  leaderboard.splice(index, 1, score)
+
+  await write(leaderboard)
 }

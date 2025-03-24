@@ -1,63 +1,118 @@
 <script lang="ts">
   import type { PageProps } from './$types'
   import { enhance } from '$app/forms'
+  import Input from '$lib/ui/Input.svelte'
+  import Jumbotron from '$lib/ui/Jumbotron.svelte'
 
   let { form }: PageProps = $props()
-
-  function highlightMatch(text, search) {
-    const regex = new RegExp(`(${search})`, 'gi')
-    return text.replace(regex, '<strong>$1</strong>')
-  }
 </script>
 
-<h2>
-  Welcome to GitGuesser x1000!
-</h2>
-<p>
-  Welcome to a simple mini game called GitGuesser x1000! In development, every code change is saved
-  into something called "commit". Every commit has an author, date when it was created and a simple
-  title/text describing what it changes. In this game you will enter some text and then guess how
-  many commits that matches that specified text with their title/text.
-</p>
+<Jumbotron title="Welcome to GitGuesser x1000!">
+  <p>
+    Welcome to a simple mini game called GitGuesser x1000! In development, every code change is saved
+    into something called "commit". Every commit has an author, date when it was created and a simple
+    title/text describing what it changes. In this game you will enter some text and then guess how
+    many commits that matches that specified text with their title/text.
+  </p>
+</Jumbotron>
 
-<form method="POST" action="?/guess" use:enhance>
-  <label>
-    <span>Search term</span>
-    <input type="text" name="search" placeholder="change color" required />
-  </label>
+<div class="forms">
+  <form method="POST" use:enhance>
+    <label>
+      <span>Search term</span>
+      <input type="text" name="search" placeholder="change color" required />
+    </label>
 
-  <label>
-    <span>Guess the count</span>
-    <input type="number" name="count" min="1" placeholder="3" required />
-  </label>
+    <label>
+      <span>Guess the count</span>
+      <input type="number" name="count" min="1" placeholder="3" required />
+    </label>
 
-  <button>
-    Make your guess!
-  </button>
-</form>
+    <button>
+      Make your guess!
+    </button>
 
-{#if form}
-  {#if !form.valid}
-    <p>{form.reason}</p>
-  {:else}
-    <p>
-      Your search term ({form.search}) gave a total of {form.matches.length} matches while your
-      guess was {form.guess}. You got a total of {form.score} points!
-    </p>
+    {#if form && !form.valid}
+        <p class="error">{form.reason}</p>
+    {/if}
+  </form>
+</div>
 
-    <form method="POST" action="?/saveToLeaderboard" use:enhance>
-      <input type="text" name="name" />
-      <input type="hidden" name="score" value={form.score} />
-      <input type="hidden" name="search" value={form.search} />
-      <input type="hidden" name="guess" value={form.guess} />
-      <input type="hidden" name="matches" value={form.matches.length} />
-      <button>Save to leaderboard</button>
-    </form>
+<style>
+  .forms {
+    margin: 0 auto;
+    max-width: 30em;
+  }
 
-    <ul>
-      {#each form.matches as commit}
-        <li><pre>{commit.id}</pre> - {@html highlightMatch(commit.title, form.search)} - {commit.author} - {commit.date}</li>
-      {/each}
-    </ul>
-  {/if}
-{/if}
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  label {
+    width: 100%;
+    display: block;
+  }
+
+  label span {
+    display: block;
+    margin-bottom: .3em;
+  }
+
+  input {
+    border: thin solid #08424d;
+    background-color: transparent;
+    color: white;
+    padding: .25em;
+    width: 100%;
+    transition: border-color 200ms ease;
+    box-sizing: border-box;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #1b7283;
+  }
+
+  input:not(:placeholder-shown):invalid {
+    border-color: #980000;
+  }
+
+  form button {
+    background-color: #08424d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: .5em;
+    transition: background-color 200ms ease;
+  }
+
+  form button:hover, form button:focus {
+    background-color: #1b7283;
+  }
+
+
+  form button:active {
+    background-color: #08424d;
+    transition: none;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  .error {
+    color: red;
+    text-align: center;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,13 @@
+html {
+  background: black;
+  background: linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,17,27,1) 50%, rgba(0,32,38,1) 100%);
+  min-height: 100vh;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 1.2rem;
+}
+
+body {
+  padding: 1em 1em 10em;
+}
