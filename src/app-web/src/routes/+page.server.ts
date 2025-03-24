@@ -1,3 +1,4 @@
+import escape from 'escape-html'
 import { v4 as uuid } from 'uuid'
 import { fail, redirect, type Actions } from '@sveltejs/kit'
 import * as commits from '$lib/server/commits'
@@ -30,7 +31,7 @@ export const actions = {
     await leaderboard.add({
       id,
       name: null,
-      search,
+      search: escape(search),
       guess: count,
       score: getScore(matches.length, count),
       matches: matches.length

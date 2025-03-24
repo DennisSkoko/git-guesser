@@ -1,3 +1,4 @@
+import escape from 'escape-html'
 import { type Actions, error, redirect } from '@sveltejs/kit'
 import * as leaderboard from '$lib/server/leaderboard'
 import * as commits from '$lib/server/commits'
@@ -22,7 +23,7 @@ export const actions = {
     const data = await request.formData()
     const name = data.get('name') as string
 
-    score.name = name
+    score.name = escape(name)
 
     await leaderboard.update(score)
 
