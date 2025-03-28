@@ -9,12 +9,14 @@
 </script>
 
 <Jumbotron title="Welcome to GitGuesser x1000!">
-  <p>
-    Welcome to a simple mini game called GitGuesser x1000! In development, every code change is saved
-    into something called "commit". Every commit has an author, date when it was created and a simple
-    title/text describing what it changes. In this game you will enter some text and then guess how
-    many commits that matches that specified text with their title/text.
-  </p>
+  {#snippet content()}
+    <p>
+      Welcome to a simple mini game called GitGuesser x1000! In development, every code change is saved
+      into something called "commit". Every commit has an author, date when it was created and a simple
+      title/text describing what it changes. In this game you will enter some text and then guess how
+      many commits that matches that specified text with their title/text.
+    </p>
+  {/snippet}
 </Jumbotron>
 
 <div class="forms">
@@ -58,6 +60,10 @@
   .error {
     color: red;
     text-align: center;
+    margin: 0;
+  }
+
+  p {
     margin: 0;
   }
 </style>

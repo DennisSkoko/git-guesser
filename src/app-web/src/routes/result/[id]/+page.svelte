@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { enhance } from '$app/forms'
   import Button from '$lib/ui/Button.svelte'
   import Input from '$lib/ui/Input.svelte'
   import type { PageData } from './$types'
 
   let { data }: { data: PageData } = $props()
 
-  function highlightMatch(text, search) {
+  function highlightMatch(text: string, search: string) {
     const regex = new RegExp(`(${search})`, 'gi')
     return text.replace(regex, '<strong>$1</strong>')
   }

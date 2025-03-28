@@ -1,15 +1,15 @@
 <script lang="ts">
-  const { title } = $props()
+  const { title, content } = $props()
 </script>
 
 <div>
   <h2>{title}</h2>
-  <slot />
+  {@render content?.()}
 </div>
 
 <style>
   h2 {
-    margin: 0 0 1em;
+    margin: 0 0 .5em;
     font-size: 3rem;
   }
 
