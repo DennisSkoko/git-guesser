@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Button from '$lib/ui/Button.svelte'
+  import Input from '$lib/ui/Input.svelte'
   import type { PageData } from './$types'
 
   let { data }: { data: PageData } = $props()
@@ -9,18 +11,15 @@
   }
 </script>
 
-<p>
-  Your search term ({data.score.search}) gave a total of {data.score.matches} matches while your
-  guess was {data.score.guess}. You got a total of {data.score.score} points!
-</p>
-
 <form method="POST" use:enhance>
-  <label>
-    <span>Name</span>
-    <input type="text" name="name" />
-  </label>
+  <p>
+    Your search term ({data.score.search}) gave a total of {data.score.matches} matches while your
+    guess was {data.score.guess}. You got a total of {data.score.score} points!
+  </p>
 
-  <button>Save to leaderboard</button>
+  <Input name="name" label="Name" />
+
+  <Button>Save to leaderboard</Button>
 </form>
 
 <ul>
@@ -39,6 +38,18 @@
 </ul>
 
 <style>
+  form {
+    margin: 3em auto 0;
+    max-width: 30em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  form p {
+    margin: 0;
+  }
+
   ul {
     list-style: none;
     margin: 0;
