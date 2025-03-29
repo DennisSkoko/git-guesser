@@ -1,3 +1,4 @@
+import { building } from '$app/environment'
 import fs from 'node:fs/promises'
 import { env } from '$env/dynamic/private'
 
@@ -11,8 +12,8 @@ async function getCommits() {
     })
 }
 
-const commits = await getCommits()
+const commits = !building ? await getCommits() : null
 
 export function search(query: string) {
-  return commits.filter(commit => commit.title.toLowerCase().includes(query.toLowerCase()))
+  return commits!.filter(commit => commit.title.toLowerCase().includes(query.toLowerCase()))
 }

@@ -1,0 +1,5 @@
+namespace: git-guesser
+
+resources:
+  - ./namespace.yaml
+  - ../src/app-web/deploy

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-web
+
+spec:
+  selector:
+    matchLabels: &labels
+      app.kubernetes.io/name: app-web
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: app-web
+          image: registry.home.dennisskoko.com/git-guesser/app-web:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ['ALL']
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: GAME_COMMITS_FILE
+              value: '/data/commits.txt'
+            - name: GAME_LEADERBOARD_FILE
+              value: '/data/leaderboard.json'
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          nfs:
+            server: storage.lan
+            path: /mnt/main/services/git-guesser
