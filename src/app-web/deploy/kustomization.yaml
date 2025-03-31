@@ -1,3 +1,11 @@
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: basic-auth-credentials
+    files:
+      - ./users
+
 resources:
   - ./deployment.yaml
   - ./ingress.yaml

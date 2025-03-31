@@ -5,7 +5,7 @@ metadata:
 
 spec:
   entryPoints:
-    - private
+    - public
   tls:
     certResolver: main
   routes:
@@ -14,3 +14,13 @@ spec:
       services:
         - name: app-web
           port: 80
+      middlewares:
+        - name: basic-auth
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: basic-auth
+spec:
+  basicAuth:
+    secret: basic-auth-credentials
